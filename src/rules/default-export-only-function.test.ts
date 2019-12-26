@@ -2,7 +2,7 @@ import { RuleTester } from "eslint"
 import rule from "./default-export-only-function"
 
 const tester = new RuleTester({
-  parser: "@typescript-eslint/parser",
+  parser: require.resolve("@typescript-eslint/parser"),
   parserOptions: {
     jsx: true,
   },
@@ -12,7 +12,7 @@ tester.run('default-export-only-function', rule, {
   valid: [
     {
       filename: "foobar.ts",
-      code: `function() {}`
+      code: `function foobar() {}`
     },
     {
       filename: "foobar-service.ts",
@@ -22,9 +22,16 @@ tester.run('default-export-only-function', rule, {
   invalid: [
     {
       filename: "foobar-service.ts",
-      code: `function() {}`,
+      code: `function foobar() {}`,
       errors: [{
-        message: "service file default export is only function"
+        message: "Service file must be exist default export"
+      }]
+    },
+{
+      filename: "foobar-service.ts",
+      code: `export default {}`,
+      errors: [{
+        message: "Default export is only function in service file"
       }]
     }
   ]
