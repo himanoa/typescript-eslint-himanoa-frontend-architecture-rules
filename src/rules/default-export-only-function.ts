@@ -7,7 +7,7 @@ const rule: Rule.RuleModule = {
   create(context) {
     return {
       ExportDefaultDeclaration(node) {
-        if(!isServiceFile(context.getFilename())) return 
+        if(!isServiceFile(context.getFilename())) return true
         if(node.type === "ExportDefaultDeclaration" && node.declaration.type !== 'FunctionDeclaration') {
           context.report({
             node,
