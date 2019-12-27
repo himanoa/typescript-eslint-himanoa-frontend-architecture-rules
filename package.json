@@ -19,5 +19,8 @@
   },
   "scripts": {
     "test": "jest"
+  },
+  "dependencies": {
+    "@typescript-eslint/typescript-estree": "^2.13.0"
   }
 }
