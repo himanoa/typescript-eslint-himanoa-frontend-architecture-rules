@@ -23,6 +23,7 @@
     "prettier": "prettier --write **/**.ts"
   },
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "^2.13.0"
+    "@typescript-eslint/typescript-estree": "^2.13.0",
+    "lodash.camelcase": "^4.3.0"
   }
 }
