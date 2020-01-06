@@ -1,14 +1,14 @@
 import { RuleTester } from "eslint"
 import rule from "./default-export-only-function"
 import path from "path"
-const parser = '@typescript-eslint/parser';
 
 const tester = new RuleTester({
   parser: require.resolve("@typescript-eslint/parser"),
   parserOptions: {
     ecmaVersion: 2015,
     tsconfigRootDir: path.join(process.cwd(), 'src/rules/__fixtures__'),
-    createDefaultProgram: true
+    createDefaultProgram: true,
+    sourceType: "module"
   },
 })
 
@@ -33,6 +33,10 @@ tester.run('default-export-only-function', rule, {
     {
       filename: "foobar-service.ts",
       code: `const foo = function() {}; export default foo`,
+    },
+    {
+      filename: "foobar-service.ts",
+      code: `import foobar from "asdasd"; export default foobar`,
     },
   ],
   
