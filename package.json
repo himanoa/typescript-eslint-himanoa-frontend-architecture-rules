@@ -19,7 +19,8 @@
     "eslint": "^6.0.0"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "prettier": "prettier --write **/**.ts"
   },
   "dependencies": {
     "@typescript-eslint/typescript-estree": "^2.13.0"
