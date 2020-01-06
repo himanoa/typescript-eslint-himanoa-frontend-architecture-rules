@@ -26,14 +26,31 @@ tester.run("default-export-only-function", rule, {
       code: `export const foobar = (deps: Dependencies) => () => {}`
     }
   ],
-
   invalid: [
     {
       filename: "foobar-service.ts",
       code: `export function foobar() {}`,
       errors: [
         {
-          message: "Service function can recevie the dependencies"
+          message: "First argument of foobar must be deps: Dependencies."
+        }
+      ]
+    },
+    {
+      filename: "foobar-service.ts",
+      code: `export const foobar = () => {}`,
+      errors: [
+        {
+          message: "First argument of foobar must be deps: Dependencies."
+        }
+      ]
+    },
+    {
+      filename: "foobar-service.ts",
+      code: `export const foobar = function() {}`,
+      errors: [
+        {
+          message: "First argument of foobar must be deps: Dependencies."
         }
       ]
     }
