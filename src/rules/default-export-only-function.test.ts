@@ -1,14 +1,14 @@
 import { RuleTester } from "eslint"
 import rule from "./default-export-only-function"
 import path from "path"
+const parser = '@typescript-eslint/parser';
 
 const tester = new RuleTester({
   parser: require.resolve("@typescript-eslint/parser"),
-  tsConfigRootDir: path.join(__dirname, '__fixtures__'),
-  project: "./tsconfig.json",
   parserOptions: {
     ecmaVersion: 2015,
-    jsx: true,
+    tsconfigRootDir: path.join(process.cwd(), 'src/rules/__fixtures__'),
+    createDefaultProgram: true
   },
 })
 
@@ -22,7 +22,21 @@ tester.run('default-export-only-function', rule, {
       filename: "foobar-service.ts",
       code: `export default function() {}`
     },
+    {
+      filename: "foobar-service.ts",
+      code: `function foo() {}; export default foo`,
+    },
+    {
+      filename: "foobar-service.ts",
+      code: `const foo = () => {}; export default foo`,
+    },
+    {
+      filename: "foobar-service.ts",
+      code: `const foo = function() {}; export default foo`,
+    },
   ],
+  
+  
   invalid: [
     {
       filename: "foobar-service.ts",
@@ -40,10 +54,10 @@ tester.run('default-export-only-function', rule, {
     },
     {
       filename: "foobar-service.ts",
-      code: `function foo() {}; export default foo`,
+      code: `const foo = 12; export default foo`,
       errors: [{
-        message: "A"
+        message: "Default export is only function in service file"
       }]
-    }
+    },
   ]
 })
