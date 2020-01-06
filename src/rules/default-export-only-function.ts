@@ -3,8 +3,8 @@ import { Node } from "estree"
 import { isServiceFile } from "utils"
 
 
-const rule: Rule.RuleModule = {
-  create(context) {
+const rule = {
+  create(context: Rule.RuleContext) {
     let existExportDefault = false;
     return {
       "Program:exit": (node: Node) => {
@@ -16,9 +16,20 @@ const rule: Rule.RuleModule = {
           })
         }
       },
-      ExportDefaultDeclaration(node) {
+      ExportDefaultDeclaration(node: Node) {
         existExportDefault = true
         if(!isServiceFile(context.getFilename())) return true
+        if(node.type === "ExportDefaultDeclaration" && node.declaration.type === "Identifier") {
+          const parserServices = context.parserServices;
+          console.dir(parserServices)
+          const checker = parserServices.program.getTypeChecker();
+          const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node)
+          const type = checker.getTypeAtLocation(originalNode);
+          context.report({
+            node,
+            message: type
+          })
+        }
         if(node.type === "ExportDefaultDeclaration" && node.declaration.type !== 'FunctionDeclaration') {
           context.report({
             node,
